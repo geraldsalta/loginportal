@@ -24,6 +24,14 @@ body{
     radial-gradient(800px 400px at 85% 30%, rgba(16,185,129,.18), transparent 55%),
     linear-gradient(180deg, var(--bg1), var(--bg2));
   overflow-x:hidden;
+
+  /* allow layout to center consistently */
+  display:flex;
+  flex-direction:column;
+  min-height: 100svh;
+}
+@supports (height: 100dvh){
+  body{ min-height: 100dvh; }
 }
 
 /* Background helper (already in HTML) */
@@ -106,33 +114,33 @@ img.logo{
   border-color: rgba(255,255,255,.28);
 }
 
-/* Center layout */
+/* Center layout (always centered) */
 .central{
   position:relative;
   z-index:2;
 
-  /* fallback */
-  min-height: calc(100vh - 90px);
-  /* better mobile behavior (address bar safe) */
-  min-height: calc(100dvh - 90px);
+  /* don't guess header height; use flex from body */
+  flex: 1 1 auto;
+  min-height: 0;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  /* responsive padding */
-  padding: clamp(16px, 4vw, 40px) clamp(14px, 4vw, 40px);
+  padding: clamp(12px, 4vw, 28px);
 }
 
 /* remove the <br> spacing without touching HTML */
 .central > br{
-  display:none;
+  display:none !important;
 }
 
 /* Login card */
 .login{
-  width: min(420px, 100%);
-  margin-inline:auto;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+
   background: rgba(255,255,255,.92);
   border: 1px solid rgba(255,255,255,.55);
   border-radius: var(--radius);
@@ -305,6 +313,26 @@ img.logo{
   }
 }
 
+@media (max-width: 480px){
+  .login{
+    max-width: 92vw;
+    border-radius: clamp(12px, 4vw, 16px);
+  }
+  .login_body{
+    padding: 14px 12px 16px;
+  }
+  .login_head{
+    padding: 10px 10px;
+    margin-bottom: 12px;
+  }
+  .login_operate li{
+    padding: 10px 10px 8px;
+  }
+  .login_btn_ok .button{
+    height: 48px;
+  }
+}
+
 @media (max-width: 420px){
   .tool ul{ gap:8px; }
   .tool li a{ height:34px; padding:0 10px; font-size:12px; }
@@ -338,6 +366,6 @@ img.logo{
     padding-bottom: 70px;
   }
   .login{
-    width: 440px;
+    max-width: 440px;
   }
 }
