@@ -43,7 +43,11 @@ body{
   align-items:center;
   justify-content:space-between;
   gap:16px;
-  padding:18px 20px;
+
+  /* responsive padding + allow wrap on smaller screens */
+  flex-wrap:wrap;
+  row-gap:10px;
+  padding: clamp(12px, 2.5vw, 18px) clamp(12px, 3vw, 20px);
 }
 
 .logo dl{
@@ -77,7 +81,9 @@ img.logo{
   padding:0;
   margin:0;
   flex-wrap:wrap;
-  justify-content:flex-end;
+
+  /* prevent overflow on small screens */
+  justify-content:flex-start;
 }
 .tool li a{
   display:inline-flex;
@@ -104,16 +110,29 @@ img.logo{
 .central{
   position:relative;
   z-index:2;
+
+  /* fallback */
   min-height: calc(100vh - 90px);
+  /* better mobile behavior (address bar safe) */
+  min-height: calc(100dvh - 90px);
+
   display:flex;
   align-items:center;
   justify-content:center;
-  padding: 10px 18px 60px;
+
+  /* responsive padding */
+  padding: clamp(16px, 4vw, 40px) clamp(14px, 4vw, 40px);
+}
+
+/* remove the <br> spacing without touching HTML */
+.central > br{
+  display:none;
 }
 
 /* Login card */
 .login{
   width: min(420px, 100%);
+  margin-inline:auto;
   background: rgba(255,255,255,.92);
   border: 1px solid rgba(255,255,255,.55);
   border-radius: var(--radius);
@@ -274,9 +293,51 @@ img.logo{
 }
 
 /* Responsive */
+@media (max-width: 768px){
+  .login_body{
+    padding: 16px 14px 18px;
+  }
+  .login_head{
+    padding: 10px 12px;
+  }
+  .login_btn_ok .button{
+    height: 46px;
+  }
+}
+
 @media (max-width: 420px){
-  .head{ padding:14px 14px; }
   .tool ul{ gap:8px; }
   .tool li a{ height:34px; padding:0 10px; font-size:12px; }
-  .login_body{ padding:16px 14px 18px; }
+}
+
+@media (max-width: 360px){
+  img.logo{
+    width:38px;
+    height:38px;
+  }
+  .logo h2{
+    font-size:16px;
+  }
+  .tool li a{
+    height:34px;
+    padding:0 10px;
+    font-size:12px;
+  }
+  .login_operate li{
+    padding: 10px 10px 8px;
+  }
+  .input{
+    font-size:14px;
+  }
+}
+
+/* Large screens: keep it from feeling tiny */
+@media (min-width: 1200px){
+  .central{
+    padding-top: 40px;
+    padding-bottom: 70px;
+  }
+  .login{
+    width: 440px;
+  }
 }
